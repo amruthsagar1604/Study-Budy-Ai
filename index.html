@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyBuddy AI - Gemini Edition</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body class="bg-gray-950 text-gray-100">
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <div class="w-80 bg-gray-900 border-r border-gray-700 flex flex-col">
+      <div class="p-6 border-b border-gray-700">
+        <h1 class="text-3xl font-bold text-emerald-400">📚 StudyBuddy AI</h1>
+        <p class="text-sm text-gray-400">Handwritten Notes + Gemini AI</p>
+      </div>
+      
+      <div class="p-4">
+        <button onclick="showUploadModal()" 
+                class="w-full bg-emerald-600 hover:bg-emerald-700 py-4 rounded-2xl font-semibold flex items-center justify-center gap-2">
+          📸 Upload Handwritten Notes
+        </button>
+      </div>
+
+      <div class="flex-1 overflow-auto px-4" id="notes-list">
+        <!-- Notes loaded by JavaScript -->
+      </div>
+    </div>
+
+    <!-- Main Area -->
+    <div class="flex-1 flex flex-col" id="main-content">
+      <div id="hero" class="flex-1 flex items-center justify-center text-center px-8">
+        <div>
+          <div class="text-7xl mb-6">📝✨</div>
+          <h2 class="text-4xl font-bold mb-4">Turn your handwritten notes into smart study material</h2>
+          <p class="text-gray-400 mb-8">Powered by <span class="text-emerald-400 font-medium">Google Gemini 2.5 Flash</span></p>
+          <button onclick="showUploadModal()" 
+                  class="px-10 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-2xl text-lg">
+            Upload Your First Note →
+          </button>
+        </div>
+      </div>
+
+      <!-- Note Viewer -->
+      <div id="note-view" class="hidden flex-1 flex flex-col">
+        <div class="p-6 border-b border-gray-700 flex justify-between items-center">
+          <button onclick="backToList()" class="text-gray-400 hover:text-white">← Back to Notes</button>
+          <h2 id="note-title" class="text-2xl font-semibold"></h2>
+          <div id="note-date" class="text-sm text-gray-400"></div>
+        </div>
+
+        <div class="flex flex-1 overflow-hidden">
+          <!-- Left: Image + Transcription -->
+          <div class="flex-1 flex flex-col border-r border-gray-700">
+            <div class="p-4 bg-gray-900">
+              <img id="note-image" class="max-h-[420px] mx-auto rounded-2xl shadow-2xl" alt="Handwritten note">
+            </div>
+            <div class="flex-1 p-6 overflow-auto">
+              <h3 class="font-medium mb-3 text-emerald-400">📄 Extracted Text (by Gemini)</h3>
+              <pre id="extracted-text" class="bg-gray-900 p-6 rounded-2xl text-sm whitespace-pre-wrap font-mono overflow-auto"></pre>
+            </div>
+          </div>
+
+          <!-- Right: AI Chat -->
+          <div class="w-96 flex flex-col bg-gray-900">
+            <div class="p-4 border-b border-gray-700 font-medium flex items-center gap-2 bg-gray-800">
+              🤖 Gemini AI Study Assistant
+            </div>
+            <div id="chat-messages" class="flex-1 p-4 overflow-auto space-y-4"></div>
+            
+            <div class="p-4 border-t border-gray-700">
+              <div class="flex gap-2">
+                <input id="chat-input" type="text" placeholder="Ask anything about these notes..." 
+                       class="flex-1 bg-gray-800 border border-gray-600 rounded-2xl px-5 py-3 focus:outline-none focus:border-emerald-500"
+                       onkeypress="if(event.key==='Enter') sendChatMessage()">
+                <button onclick="sendChatMessage()" class="bg-emerald-600 px-6 rounded-2xl hover:bg-emerald-700">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload Modal -->
+  <div id="upload-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+    <div class="bg-gray-900 rounded-3xl p-8 w-full max-w-md">
+      <h3 class="text-2xl font-bold mb-6">Upload Handwritten Notes</h3>
+      <div id="drop-zone" class="border-2 border-dashed border-gray-600 rounded-2xl h-64 flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500">
+        <p class="text-5xl mb-4">📸</p>
+        <p class="text-lg font-medium">Drop image here or</p>
+        <label class="mt-4 px-6 py-3 bg-emerald-600 rounded-2xl cursor-pointer hover:bg-emerald-700">
+          Choose File
+          <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleFileSelect(event)">
+        </label>
+      </div>
+      <div class="flex justify-end gap-4 mt-8">
+        <button onclick="hideUploadModal()" class="px-6 py-3 text-gray-400">Cancel</button>
+        <button onclick="uploadFile()" id="upload-btn" class="px-8 py-3 bg-emerald-600 rounded-2xl font-medium">Upload & Digitize with Gemini</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

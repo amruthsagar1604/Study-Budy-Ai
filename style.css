@@ -1,0 +1,8 @@
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+#chat-messages {
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 #1f2937;
+}
